@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .title {
+            text-align: center;
+            font-size: 32px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .content {
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .content img {
+            max-width: 50%;
+            height: auto;
+        }
+        .content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .content .caption {
+            font-size: 14px;
+            margin-top: -10px; /* 调整图示的位置 */
+            margin-bottom: 20px; /* 增加图示与下文的间距 */
+            text-align: center;
+        }
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .image-row img {
+            max-width: 48%; /* 调整图像的宽度以适应并列布局 */
+            height: auto;
+        }
+        .table-style-1 {
+            font-size: 0.8em; 
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .table-style-1 th, .table-style-1 td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        .table-style-1 th {
+            background-color: #f2f2f2;
+        }
+        .table-style-1 .green {
+            background-color: #d6eadf;
+        }
+        .table-style-1 .blue {
+            background-color: #d0e3f0;
+        }
+        .table-style-1 .orange {
+            background-color: #f8d7da;
+        }
+
+        /* 表格2样式 */
+        .table-style-2 {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .table-style-2 th, .table-style-2 td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        .table-style-2 th {
+            background-color: #f2f2f2;
+        }
+        .table-style-2 .green {
+            background-color: #d6eadf;
+        }
+        .table-style-2 .blue {
+            background-color: #d0e3f0;
+        }
+        .table-style-2 .orange {
+            background-color: #f8d7da;
+        }
+        ul {
+            text-align: left; /* 将ul的文本左对齐 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 大标题 -->
+    <div class="title">Promoting Structural Understanding: Hybrid-Structure-Oriented Transformer for Arm Musculoskeletal Ultrasound Segmentation</div>
+
+    <!-- 第一段 -->
+    <div class="container">
+        <div class="content">
+            <h2>Abstract</h2>
+            <p>Segmenting complex and hybrid layers, including skin, subcutaneous fat, skeletal muscle, and bone in arm musculoskeletal ultrasound (MSKUS), is extremely crucial for diagnosing and monitoring Breast-Cancer-Related Lymphedema (BCRL). Nevertheless, previous research has primarily focused on individual muscle or bone segmentation in MSKUS, overlooking the horizontal and curvilinear hybrid morphologies that characterize these structures. To address this limitation, we propose a novel hybrid structure-oriented Transformer with structural prior (HSformer+) to promote structural understanding, a framework capable of simultaneously segmenting multilayer hybrid structures. Specifically, HSformer+ first combines hierarchical-consistency relative position encoding to impose structural morphology bias within local windows. Then we propose a structure-biased constraint for attention calculation, innovatively enhancing feature representation. Ultimately, a structure-oriented objective function is introduced to constrain the spatial location and tissue distribution. Our experiments on a public arm MSKUS dataset demonstrate that HSformer+ achieves state-of-the-art segmentation performance. Further experiments on a private arm MSKUS dataset prove that our method has a strong generalization to clinical small-scale MSKUS datasets.</p>
+            <img src="img/figure1_2.PNG" alt="Examples of arm MSKUS">
+            <p class="caption">Examples of arm MSKUS with a hybrid and hierarchical structure, including horizontal layers paralleling to the skin surface and curvilinear layers.</p>
+        </div>
+
+        <div class="content">
+            <h2>Overall Framework</h2>
+            <p>In light of the aforementioned issues and with reference to Figure 1, we propose a novel hybrid structure-oriented Transformer with structural prior (HSformer+) for arm MSKUS segmentation. This model simultaneously captures effective feature representations for both the correlations and differences of interlayer and intralayer structures from horizontal and vertical perspectives. To address the challenge of curvilinear structures due to the inherent characteristics of the arm MSKUS and the effect of BCRL, hierarchical-consistency relative position encoding (HCPE) imposes structure bias onto the elements within the local window. Meanwhile, to enhance layer differentiation and emphasize critical features, a structure-biased constraint (SBC) is developed to calculate attention weights. Additionally, we design a novel structure-oriented loss based on spatial location and tissue distribution in arm MSKUS images.</p>
+            <img src="img/model2.PNG" alt="Illustration of the proposed HSformer+ framework">
+            <p class="caption">Illustration of the proposed HSformer+ framework.</p>
+        </div>
+
+        <div class="content">
+            <h2>Comparison Experiments on the public arm MSKUS Datasets</h2>
+            <p>Considering the significant characteristics of arm MSKUS segmentation, we design three types of comparative experiments to verify the effectiveness of our model from different perspectives:</p>
+            <ul>
+                <li>We compare HSformer+ with nine representative image segmentation models: in addition to UNet, Attention UNet, UNet++, DeepLabV3, TransUNet, there also AAU-Net, BUSSeg EMCADNet and MADGNet.</li>
+                <li>We select four frameworks recently developed for MSKUS images segmentation, such as GSCNN, AMCNet, EnsemSeg and SpineSeg.</li>
+                <li>Furthermore, comparisons are made between HSformer+ and four existing algorithms designed for segmentation of layer-structure medical images, involving TCCT, CoherentSeg, RetiFluidNet and Y-Net.</li>
+            </ul>
+            <h2 style="font-size: 0.8em;">Table I - Comparisons with nine representative image segmentation models. The green area indicates five classic segmentation models, the blue area represents two recent US segmentation architectures, and the orange area represents the latest SOTA methods.</h2>
+<table class="table-style-1">
+    <tr>
+        <th>Layer Structure</th>
+        <th>Method</th>
+        <th>U_Net</th>
+        <th>Attention UNet</th>
+        <th>UNet++</th>
+        <th>DeeplabV3</th>
+        <th>TransUnet</th>
+        <th>AAU-Net</th>
+        <th>BUSSeg</th>
+        <th>EMCADNet</th>
+        <th>MADGNet</th>
+        <th>HSformer+</th>
+    </tr>
+    <tr>
+        <td rowspan="4">Gel</td>
+        <td>DSC</td>
+        <td class="green">0.9273</td>
+        <td class="green">0.9117</td>
+        <td class="green">0.9415</td>
+        <td class="green">0.9466</td>
+        <td class="blue">0.9694</td>
+        <td class="blue">0.9515</td>
+        <td class="blue">0.9587</td>
+        <td class="orange">0.9640</td>
+        <td class="orange">0.9332</td>
+        <td style="color: red;">0.9810</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.8659</td>
+        <td class="green">0.8417</td>
+        <td class="green">0.8943</td>
+        <td class="green">0.9044</td>
+        <td class="blue">0.9477</td>
+        <td class="blue">0.9304</td>
+        <td class="blue">0.9419</td>
+        <td class="orange">0.9319</td>
+        <td class="orange">0.9120</td>
+        <td style="color: red;">0.9639</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">2.1875</td>
+        <td class="green">3.1188</td>
+        <td class="green">2.2773</td>
+        <td class="green">2.4916</td>
+        <td class="blue">2.3939</td>
+        <td class="blue">1.9393</td>
+        <td class="blue">2.0603</td>
+        <td class="orange">1.9358</td>
+        <td class="orange">2.2794</td>
+        <td style="color: red;">1.7481</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">0.4734</td>
+        <td class="green">0.5312</td>
+        <td class="green">0.4980</td>
+        <td class="green">0.5429</td>
+        <td class="blue">0.5429</td>
+        <td class="blue">0.4269</td>
+        <td class="blue">0.4563</td>
+        <td class="orange">0.4297</td>
+        <td class="orange">0.5330</td>
+        <td style="color: red;">0.3852</td>
+      </tr>
+      <tr>
+        <td rowspan="4">Skin</td>
+        <td>DSC</td>
+        <td class="green">0.7846</td>
+        <td class="green">0.7875</td>
+        <td class="green">0.7844</td>
+        <td class="green">0.7925</td>
+        <td class="blue">0.8492</td>
+        <td class="blue">0.8319</td>
+        <td class="blue">0.8029</td>
+        <td class="orange">0.8261</td>
+        <td class="orange">0.8015</td>
+        <td style="color: red;">0.8896</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.6602</td>
+        <td class="green">0.6581</td>
+        <td class="green">0.6563</td>
+        <td class="green">0.6702</td>
+        <td class="blue">0.7600</td>
+        <td class="blue">0.7544</td>
+        <td class="blue">0.6777</td>
+        <td class="orange">0.7168</td>
+        <td class="orange">0.6723</td>
+        <td style="color: red;">0.8145</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">8.8346</td>
+        <td class="green">4.4768</td>
+        <td class="green">4.1263</td>
+        <td class="green">4.1263</td>
+        <td class="blue">4.2186</td>
+        <td class="blue">3.2168</td>
+        <td class="blue">3.2383</td>
+        <td class="orange">2.3533</td>
+        <td class="orange">2.6547</td>
+        <td style="color: red;">2.8107</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">1.2272</td>
+        <td class="green">1.1527</td>
+        <td class="green">1.3511</td>
+        <td class="green">1.2235</td>
+        <td class="blue">1.0528</td>
+        <td class="blue">1.1357</td>
+        <td class="blue">1.1324</td>
+        <td class="orange">1.1137</td>
+        <td class="orange">1.2286</td>
+        <td style="color: red;">0.9740</td>
+      </tr>
+      <tr>
+        <td rowspan="4">Subcutaneous Fat</td>
+        <td>DSC</td>
+        <td class="green">0.8349</td>
+        <td class="green">0.8517</td>
+        <td class="green">0.8515</td>
+        <td class="green">0.8522</td>
+        <td class="blue">0.8572</td>
+        <td class="blue">0.8798</td>
+        <td class="blue">0.8842</td>
+        <td class="orange">0.8956</td>
+        <td class="orange">0.9021</td>
+        <td style="color: red;">0.9155</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.7345</td>
+        <td class="green">0.7584</td>
+        <td class="green">0.7570</td>
+        <td class="green">0.7609</td>
+        <td class="blue">0.7679</td>
+        <td class="blue">0.7986</td>
+        <td class="blue">0.8031</td>
+        <td class="orange">0.8208</td>
+        <td class="orange">0.8299</td>
+        <td style="color: red;">0.8519</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">18.2158</td>
+        <td class="green">14.3111</td>
+        <td class="green">15.0515</td>
+        <td class="green">14.2644</td>
+        <td class="blue">13.9462</td>
+        <td class="blue">13.7089</td>
+        <td class="blue">12.8496</td>
+        <td class="orange">12.1448</td>
+        <td class="orange">11.6314</td>
+        <td style="color: red;">11.3129</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">4.1608</td>
+        <td class="green">3.1729</td>
+        <td class="green">3.8462</td>
+        <td class="green">3.4544</td>
+        <td class="blue">3.4454</td>
+        <td class="blue">3.2277</td>
+        <td class="blue">2.9266</td>
+        <td class="orange">2.8586</td>
+        <td class="orange">2.9162</td>
+        <td style="color: red;">2.6104</td>
+      </tr>
+      <tr>
+        <td rowspan="4">Muscles</td>
+        <td>DSC</td>
+        <td class="green">0.8081</td>
+        <td class="green">0.8300</td>
+        <td class="green">0.8376</td>
+        <td class="green">0.8428</td>
+        <td class="blue">0.8687</td>
+        <td class="blue">0.8807</td>
+        <td class="blue">0.8694</td>
+        <td class="orange">0.9009</td>
+        <td class="orange">0.8740</td>
+        <td style="color: red;">0.9084</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.7039</td>
+        <td class="green">0.7319</td>
+        <td class="green">0.7421</td>
+        <td class="green">0.7618</td>
+        <td class="blue">0.7860</td>
+        <td class="blue">0.7882</td>
+        <td class="blue">0.7866</td>
+        <td class="orange">0.8071</td>
+        <td class="orange">0.8091</td>
+        <td style="color: red;">0.8407</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">32.1766</td>
+        <td class="green">31.1278</td>
+        <td class="green">26.2814</td>
+        <td class="green">24.9647</td>
+        <td class="blue">25.7427</td>
+        <td class="blue">24.585</td>
+        <td class="blue">25.9433</td>
+        <td class="orange">23.6565</td>
+        <td class="orange">23.8916</td>
+        <td style="color: red;">22.6557</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">6.8631</td>
+        <td class="green">5.3731</td>
+        <td class="green">5.8816</td>
+        <td class="green">5.6443</td>
+        <td class="blue">5.9926</td>
+        <td class="blue">5.0030</td>
+        <td class="blue">5.2813</td>
+        <td class="orange">5.6278</td>
+        <td class="orange">5.3866</td>
+        <td style="color: red;">4.5712</td>
+      </tr>
+      <tr>
+        <td rowspan="4">Bones</td>
+        <td>DSC</td>
+        <td class="green">0.7891</td>
+        <td class="green">0.7999</td>
+        <td class="green">0.8234</td>
+        <td class="green">0.8272</td>
+        <td class="blue">0.8192</td>
+        <td class="blue">0.8497</td>
+        <td class="blue">0.8695</td>
+        <td class="orange">0.8808</td>
+        <td class="orange">0.8701</td>
+        <td style="color: red;">0.9028</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.6934</td>
+        <td class="green">0.7036</td>
+        <td class="green">0.7380</td>
+        <td class="green">0.7502</td>
+        <td class="blue">0.7522</td>
+        <td class="blue">0.7824</td>
+        <td class="blue">0.8030</td>
+        <td class="orange">0.8214</td>
+        <td class="orange">0.7970</td>
+        <td style="color: red;">0.8325</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">34.1490</td>
+        <td class="green">38.6285</td>
+        <td class="green">27.7593</td>
+        <td class="green">26.3163</td>
+        <td class="blue">29.6025</td>
+        <td class="blue">26.0241</td>
+        <td class="blue">28.3172</td>
+        <td class="orange" style="color: red;">22.1648</td>
+        <td class="orange">23.4392</td>
+        <td >24.6789</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">6.7805</td>
+        <td class="green">6.8423</td>
+        <td class="green">5.6341</td>
+        <td class="green">5.0575</td>
+        <td class="blue">6.2708</td>
+        <td class="blue">4.7145</td>
+        <td class="blue">4.7353</td>
+        <td class="orange">4.4625</td>
+        <td class="orange">4.4625</td>
+        <td style="color: red;">4.3162</td>
+      </tr>
+      <tr>
+        <td rowspan="4">Mean</td>
+        <td>DSC</td>
+        <td class="green">0.8288</td>
+        <td class="green">0.8361</td>
+        <td class="green">0.8476</td>
+        <td class="green">0.8533</td>
+        <td class="blue">0.8711</td>
+        <td class="blue">0.8771</td>
+        <td class="blue">0.8767</td>
+        <td class="orange">0.8934</td>
+        <td class="orange">0.8834</td>
+        <td style="color: red;">0.9194</td>
+      </tr>
+      <tr>
+        <td>JI</td>
+        <td class="green">0.7315</td>
+        <td class="green">0.7387</td>
+        <td class="green">0.7575</td>
+        <td class="green">0.7658</td>
+        <td class="blue">0.8021</td>
+        <td class="blue">0.7955</td>
+        <td class="blue">0.7905</td>
+        <td class="orange">0.8214</td>
+        <td class="orange">0.7970</td>
+        <td style="color: red;">0.8593</td>
+      </tr>
+      <tr>
+        <td>HD</td>
+        <td class="green">18.1127</td>
+        <td class="green">13.1245</td>
+        <td class="green">15.0992</td>
+        <td class="green">14.3114</td>
+        <td class="blue">14.9328</td>
+        <td class="blue">13.3448</td>
+        <td class="blue">14.3114</td>
+        <td class="orange">12.6454</td>
+        <td class="orange">12.6484</td>
+        <td style="color: red;">12.6420</td>
+      </tr>
+      <tr>
+        <td>ASD</td>
+        <td class="green">3.9010</td>
+        <td class="green">3.4144</td>
+        <td class="green">3.4422</td>
+        <td class="green">3.1845</td>
+        <td class="blue">3.4609</td>
+        <td class="blue">2.9015</td>
+        <td class="blue">2.9063</td>
+        <td class="orange">2.9048</td>
+        <td class="orange">2.9512</td>
+        <td style="color: red;">2.5714</td>
+      </tr>
+</table>
+<p style="height: 10px;">&nbsp;</p>
+
+<h2 style="font-size: 0.8em;">Table II Comparisons with eight MSKUS or layer-structure segmentation models. The blue area displays four representative MSKUS segmentation models, the green area demonstrates four layer-structure segmentation architectures.</h2>
+<table class="table-style-2">
+  
+  <thead>
+      <tr>
+          <th>class</th>
+          <th>indicator</th>
+          <th>SpineSeg</th>
+          <th>EnsemSeg</th>
+          <th>GSCNN</th>
+          <th>AMCNet</th>
+          <th>RetiFluidNet</th>
+          <th>Y-Net</th>
+          <th>TCCT</th>
+          <th>CoherentSeg</th>
+          <th>HSformer+</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td rowspan="4">Gel</td>
+          <td>DSC</td>
+          <td class="blue">0.8970</td>
+          <td class="blue">0.9372</td>
+          <td class="blue">0.9494</td>
+          <td class="blue">0.9170</td>
+          <td class="green">0.9397</td>
+          <td class="green">0.9367</td>
+          <td class="green">0.9368</td>
+          <td class="green">0.9051</td>
+          <td style="color: red;">0.9810</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.8147</td>
+          <td class="blue">0.8840</td>
+          <td class="blue">0.9096</td>
+          <td class="blue">0.8531</td>
+          <td class="green">0.8897</td>
+          <td class="green">0.8842</td>
+          <td class="green">0.8861</td>
+          <td class="green">0.8319</td>
+          <td style="color: red;">0.9639</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">4.0013</td>
+          <td class="blue">2.5436</td>
+          <td class="blue">2.3418</td>
+          <td class="blue">2.3733</td>
+          <td class="green">2.1029</td>
+          <td class="green">2.2984</td>
+          <td class="green">2.5272</td>
+          <td class="green">2.4552</td>
+          <td style="color: red;">1.7481</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">0.8489</td>
+          <td class="blue">0.5352</td>
+          <td class="blue">0.5210</td>
+          <td class="blue">0.5251</td>
+          <td class="green">0.4545</td>
+          <td class="green">0.5116</td>
+          <td class="green">0.5517</td>
+          <td class="green">0.4949</td>
+          <td style="color: red;">0.3852</td>
+      </tr>
+      <tr>
+          <td rowspan="4">Skin</td>
+          <td>DSC</td>
+          <td class="blue">0.7279</td>
+          <td class="blue">0.8407</td>
+          <td class="blue">0.7903</td>
+          <td class="blue">0.7987</td>
+          <td class="green">0.8280</td>
+          <td class="green">0.8110</td>
+          <td class="green">0.7976</td>
+          <td class="green">0.7823</td>
+          <td style="color: red;">0.8896</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.5822</td>
+          <td class="blue">0.7417</td>
+          <td class="blue">0.6632</td>
+          <td class="blue">0.6749</td>
+          <td class="green">0.7242</td>
+          <td class="green">0.6858</td>
+          <td class="green">0.6736</td>
+          <td class="green">0.6549</td>
+          <td style="color: red;">0.8145</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">5.1969</td>
+          <td class="blue">3.5243</td>
+          <td class="blue">3.5666</td>
+          <td class="blue">3.4505</td>
+          <td class="green">3.3333</td>
+          <td class="green">3.5590</td>
+          <td class="green">3.9399</td>
+          <td class="green">3.9573</td>
+          <td style="color: red;">2.8107</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">1.9822</td>
+          <td class="blue">1.1842</td>
+          <td class="blue">1.1818</td>
+          <td class="blue">1.1367</td>
+          <td class="green">1.0845</td>
+          <td class="green">1.1886</td>
+          <td class="green">1.2596</td>
+          <td class="green">1.2250</td>
+          <td style="color: red;">0.9740</td>
+      </tr>
+      <tr>
+          <td rowspan="4">Subcutaneous Fat</td>
+          <td>DSC</td>
+          <td class="blue">0.8451</td>
+          <td class="blue">0.8739</td>
+          <td class="blue">0.8604</td>
+          <td class="blue">0.8680</td>
+          <td class="green">0.8648</td>
+          <td class="green">0.8676</td>
+          <td class="green">0.8642</td>
+          <td class="green">0.8356</td>
+          <td style="color: red;">0.9155</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.7470</td>
+          <td class="blue">0.7895</td>
+          <td class="blue">0.7711</td>
+          <td class="blue">0.7714</td>
+          <td class="green">0.7819</td>
+          <td class="green">0.7742</td>
+          <td class="green">0.7742</td>
+          <td class="green">0.7292</td>
+          <td style="color: red;">0.8519</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">24.9700</td>
+          <td class="blue">15.1477</td>
+          <td class="blue">15.6484</td>
+          <td class="blue">14.8270</td>
+          <td class="green">15.6120</td>
+          <td class="green">15.5703</td>
+          <td class="green">15.6439</td>
+          <td class="green">20.9985</td>
+          <td style="color: red;">11.3129</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">5.8961</td>
+          <td class="blue">3.5257</td>
+          <td class="blue">3.8932</td>
+          <td class="blue">3.4860</td>
+          <td class="green">3.4949</td>
+          <td class="green">3.4456</td>
+          <td class="green">4.2678</td>
+          <td class="green">4.1733</td>
+          <td style="color: red;">2.6104</td>
+      </tr>
+      <tr>
+          <td rowspan="4">Muscles</td>
+          <td>DSC</td>
+          <td class="blue">0.8556</td>
+          <td class="blue">0.8498</td>
+          <td class="blue">0.8430</td>
+          <td class="blue">0.8524</td>
+          <td class="green">0.8654</td>
+          <td class="green">0.8621</td>
+          <td class="green">0.8617</td>
+          <td class="green">0.8090</td>
+          <td style="color: red;">0.9084</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.7558</td>
+          <td class="blue">0.7658</td>
+          <td class="blue">0.7572</td>
+          <td class="blue">0.7630</td>
+          <td class="green">0.7859</td>
+          <td class="green">0.7784</td>
+          <td class="green">0.7765</td>
+          <td class="green">0.6869</td>
+          <td style="color: red;">0.8407</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">25.5053</td>
+          <td class="blue">27.4446</td>
+          <td class="blue">26.2865</td>
+          <td class="blue">28.0218</td>
+          <td class="green">25.6670</td>
+          <td class="green">27.0126</td>
+          <td class="green">25.8736</td>
+          <td class="green">48.0643</td>
+          <td style="color: red;">22.6557</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">5.1969</td>
+          <td class="blue">5.5926</td>
+          <td class="blue">5.3095</td>
+          <td class="blue">6.0242</td>
+          <td class="green">5.4491</td>
+          <td class="green">5.4576</td>
+          <td class="green">4.9813</td>
+          <td class="green">8.9130</td>
+          <td style="color: red;">4.5712</td>
+      </tr>
+      <tr>
+          <td rowspan="4">Bones</td>
+          <td>DSC</td>
+          <td class="blue">0.8347</td>
+          <td class="blue">0.8453</td>
+          <td class="blue">0.8149</td>
+          <td class="blue">0.8252</td>
+          <td class="green">0.8312</td>
+          <td class="green">0.8459</td>
+          <td class="green">0.8458</td>
+          <td class="green">0.7921</td>
+          <td style="color: red;">0.9028</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.7396</td>
+          <td class="blue">0.7662</td>
+          <td class="blue">0.7287</td>
+          <td class="blue">0.7339</td>
+          <td class="green">0.7472</td>
+          <td class="green">0.7535</td>
+          <td class="green">0.7557</td>
+          <td class="green">0.6751</td>
+          <td style="color: red;">0.8325</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">31.7518</td>
+          <td class="blue">26.2052</td>
+          <td class="blue">28.4942</td>
+          <td class="blue">28.2102</td>
+          <td class="green">29.0166</td>
+          <td class="green">27.9990</td>
+          <td class="green">27.1545</td>
+          <td class="green">47.1655</td>
+          <td style="color: red;">24.6789</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">6.5026</td>
+          <td class="blue">5.1348</td>
+          <td class="blue">5.5064</td>
+          <td class="blue">5.0220</td>
+          <td class="green">5.6171</td>
+          <td class="green">4.5494</td>
+          <td class="green">5.6406</td>
+          <td class="green">8.2199</td>
+          <td style="color: red;">4.3162</td>
+      </tr>
+      <tr>
+          <td rowspan="4">Mean</td>
+          <td>DSC</td>
+          <td class="blue">0.8320</td>
+          <td class="blue">0.8693</td>
+          <td class="blue">0.8516</td>
+          <td class="blue">0.8523</td>
+          <td class="green">0.8658</td>
+          <td class="green">0.8646</td>
+          <td class="green">0.8612</td>
+          <td class="green">0.8248</td>
+          <td style="color: red;">0.9194</td>
+      </tr>
+      <tr>
+          <td>JI</td>
+          <td class="blue">0.7278</td>
+          <td class="blue">0.7894</td>
+          <td class="blue">0.7659</td>
+          <td class="blue">0.7619</td>
+          <td class="green">0.7765</td>
+          <td class="green">0.7764</td>
+          <td class="green">0.7557</td>
+          <td class="green">0.7156</td>
+          <td style="color: red;">0.8593</td>
+      </tr>
+      <tr>
+          <td>HD</td>
+          <td class="blue">18.2850</td>
+          <td class="blue">14.9820</td>
+          <td class="blue">15.2675</td>
+          <td class="blue">15.1007</td>
+          <td class="green">15.1463</td>
+          <td class="green">15.2878</td>
+          <td class="green">15.2078</td>
+          <td class="green">24.5281</td>
+          <td style="color: red;">12.6420</td>
+      </tr>
+      <tr>
+          <td>ASD</td>
+          <td class="blue">4.0798</td>
+          <td class="blue">3.2611</td>
+          <td class="blue">3.4253</td>
+          <td class="blue">3.1081</td>
+          <td class="green">3.2200</td>
+          <td class="green">3.3034</td>
+          <td class="green">3.4015</td>
+          <td class="green">4.6046</td>
+          <td style="color: red;">2.5714</td>
+      </tr>
+  </tbody>
+  </table>
+
+  <p style="height: 10px;">&nbsp;</p>
+
+            <div class="image-row">
+                <img src="img/results-comparison1.PNG" alt="Results comparison 1">
+                <img src="img/results-comparison2.PNG" alt="Results comparison 2">
+            </div>
+            <p class="caption">Segmentation results predicted by seventeen models to verify the effectiveness of HSformer+ from different perspectives. Yellow, pink, green, blue and red respectively represent the segmentation of gel, skin, fat, muscle and bone layers.</p>
+        </div>
+    </div>
+
+    <!-- 第二段 -->
+    <section data-block-type="contents" data-id="5" draggable="true" class="fdb-block">
+        <div class="container">
+            <div class="content">
+                <h2>Ablation Analysis</h2>
+                <p>In this section, (1) we first conduct an ablation study on the Transformer block architecture. As shown in Figure (b), HSformer+ divides K heads into two groups for horizontal and vertical hybrid structure-oriented attention calculations, followed by concatenation. We also design an architecture called HSformer-test, where all K heads are used for both horizontal and vertical feature extraction, followed by broadcasting, as depicted in Figure (a). Subsequently, (2) To evaluate the effectiveness of HCPE, SBC and the novel structure-oriented loss, we implement component analysis with several variants.</p>
+                <img src="img/ablation-archi.PNG" alt="Ablation architecture">
+                <p class="caption">Architectures of HSformer+ and HSformer-test.</p>
+            </div>
+
+            <div class="content">
+                <h2>Comparison with SAM (Segment Anything) model</h2>
+                <p>Furthermore, we test on the recently popular SAM (Segment Anything). We select two representative SAM-based models: <strong>SAM-MP</strong>: Prompt includes a randomly marked background point as a negative point, and multiple foreground points marked as positive points; <strong>SAM-BOX</strong>: The bounding box of the GT mask was directly treated as a prompt. The qualitative results are demonstrated in the following figure and table.</p>
+                <img src="img/results-SAM.PNG" alt="Results of SAM models">
+                <p class="caption">The segmentation performance of SAM-MP, SAM-BOX and the proposed HSformer+.</p>
+            </div>
+
+            <div class="content">
+                <h2>In-house Small-scale Arm MSKUS Test</h2>
+                <p>To validate the generalization of HSformer+, we directly test 104 arm MSKUS images without model training, which were collected from Beijing Tsinghua Changgung Hospital using a SonoScape E2 machine. Anatomical structures of the MSKUS images from the in-house and public datasets are consistent, with a large amount of speckle noise and shadow artifacts that pose greater challenges to the segmentation task. Although there are significant differences in image quality and style between the two datasets, this experiment proves that our HSformer+ can achieve favorable segmentation performance on untrained clinical small MSKUS datasets, clearly depict the structures of each tissue layer and show strong generalization.</p>
+                <img src="img/results2-private MSKUS.PNG" alt="Results on private MSKUS dataset">
+                <p class="caption">Segmentation results predicted by seventeen models to verify the effectiveness of HSformer+ from different perspectives. Yellow, pink, green, blue and red respectively represent the segmentation of gel plate, skin, fat layer, muscle and bone layer.</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
