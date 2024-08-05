@@ -104,7 +104,7 @@
 </head>
 <body>
     <!-- 大标题 -->
-    <div class="title">Promoting Structural Understanding: Hybrid-Structure-Oriented Transformer for Arm Musculoskeletal Ultrasound Segmentation</div>
+    <div class="title">Promoting Structural Understanding: Hybrid Structure-Oriented Transformer for Arm Musculoskeletal Ultrasound Segmentation</div>
 
     <!-- 第一段 -->
     <div class="container">
@@ -117,13 +117,13 @@
 
         <div class="content">
             <h2>Overall Framework</h2>
-            <p>In light of the aforementioned issues and with reference to Figure 1, we propose a novel hybrid structure-oriented Transformer with structural prior (HSformer+) for arm MSKUS segmentation. This model simultaneously captures effective feature representations for both the correlations and differences of interlayer and intralayer structures from horizontal and vertical perspectives. To address the challenge of curvilinear structures due to the inherent characteristics of the arm MSKUS and the effect of BCRL, hierarchical-consistency relative position encoding (HCPE) imposes structure bias onto the elements within the local window. Meanwhile, to enhance layer differentiation and emphasize critical features, a structure-biased constraint (SBC) is developed to calculate attention weights. Additionally, we design a novel structure-oriented loss based on spatial location and tissue distribution in arm MSKUS images.</p>
+            <p>In light of the aforementioned issues and with reference to above figure, we propose a novel hybrid structure-oriented Transformer with structural prior (HSformer+) for arm MSKUS segmentation. This model simultaneously captures effective feature representations for both the correlations and differences of interlayer and intralayer structures from horizontal and vertical perspectives. To address the challenge of curvilinear structures due to the inherent characteristics of the arm MSKUS and the effect of BCRL, hierarchical-consistency relative position encoding (HCPE) imposes structure bias onto the elements within the local window. Meanwhile, to enhance layer differentiation and emphasize critical features, a structure-biased constraint (SBC) is developed to calculate attention weights. Additionally, we design a novel structure-oriented loss based on spatial location and tissue distribution in arm MSKUS images.</p>
             <img src="img/model2.PNG" alt="Illustration of the proposed HSformer+ framework">
             <p class="caption">Illustration of the proposed HSformer+ framework.</p>
         </div>
 
         <div class="content">
-            <h2>Comparison Experiments on the public arm MSKUS Datasets</h2>
+            <h2>Comparison Experiments on the Public Arm MSKUS Datasets</h2>
             <p>Considering the significant characteristics of arm MSKUS segmentation, we design three types of comparative experiments to verify the effectiveness of our model from different perspectives:</p>
             <ul>
                 <li>We compare HSformer+ with nine representative image segmentation models: in addition to UNet, Attention UNet, UNet++, DeepLabV3, TransUNet, there also AAU-Net, BUSSeg EMCADNet and MADGNet.</li>
@@ -224,7 +224,7 @@
         <td class="blue">0.6777</td>
         <td class="orange">0.7168</td>
         <td class="orange">0.6723</td>
-        <td style="color: red;">0.8145</td>
+        <td style="color: red;">0.8076</td>
       </tr>
       <tr>
         <td>HD</td>
@@ -237,7 +237,7 @@
         <td class="blue">3.2383</td>
         <td class="orange">2.3533</td>
         <td class="orange">2.6547</td>
-        <td style="color: red;">2.8107</td>
+        <td style="color: red;">2.8145</td>
       </tr>
       <tr>
         <td>ASD</td>
@@ -558,7 +558,7 @@
           <td class="green">0.6858</td>
           <td class="green">0.6736</td>
           <td class="green">0.6549</td>
-          <td style="color: red;">0.8145</td>
+          <td style="color: red;">0.8076</td>
       </tr>
       <tr>
           <td>HD</td>
@@ -570,7 +570,7 @@
           <td class="green">3.5590</td>
           <td class="green">3.9399</td>
           <td class="green">3.9573</td>
-          <td style="color: red;">2.8107</td>
+          <td style="color: red;">2.8145</td>
       </tr>
       <tr>
           <td>ASD</td>
@@ -798,14 +798,14 @@
         <div class="container">
             <div class="content">
                 <h2>Ablation Analysis</h2>
-                <p>In this section, (1) we first conduct an ablation study on the Transformer block architecture. As shown in Figure (b), HSformer+ divides K heads into two groups for horizontal and vertical hybrid structure-oriented attention calculations, followed by concatenation. We also design an architecture called HSformer-test, where all K heads are used for both horizontal and vertical feature extraction, followed by broadcasting, as depicted in Figure (a). Subsequently, (2) To evaluate the effectiveness of HCPE, SBC and the novel structure-oriented loss, we implement component analysis with several variants.</p>
+                <p>In this section, (1) we first conduct an ablation study on the Transformer block architecture. As shown in Figure (a), HSformer+ divides K heads into two groups for horizontal and vertical hybrid structure-oriented attention calculations, followed by concatenation. We also design an architecture called HSformer-test, where all K heads are used for both horizontal and vertical feature extraction, followed by broadcasting, as depicted in Figure (b). Subsequently, (2) To evaluate the effectiveness of HCPE, SBC and the novel structure-oriented loss, we implement component analysis with several variants.</p>
                 <img src="img/ablation-archi.PNG" alt="Ablation architecture">
                 <p class="caption">Architectures of HSformer+ and HSformer-test.</p>
             </div>
 
             <div class="content">
-                <h2>Comparison with SAM (Segment Anything) model</h2>
-                <p>Furthermore, we test on the recently popular SAM (Segment Anything). We select two representative SAM-based models: <strong>SAM-MP</strong>: Prompt includes a randomly marked background point as a negative point, and multiple foreground points marked as positive points; <strong>SAM-BOX</strong>: The bounding box of the GT mask was directly treated as a prompt. The qualitative results are demonstrated in the following figure.</p>
+                <h2>Comparison with SAM (Segment Anything) Model</h2>
+                <p>Furthermore, we test on the recently popular SAM (Segment Anything). We select two representative SAM-based models: <strong>SAM-MP</strong>: Prompt includes a randomly marked background point as a negative point, and multiple foreground points marked as positive points; <strong>SAM-BOX</strong>: The bounding box of the GT mask is directly treated as a prompt. The qualitative results are demonstrated in the following figure.</p>
                 <img src="img/results-SAM.PNG" alt="Results of SAM models">
                 <p class="caption">The segmentation performance of SAM-MP, SAM-BOX and the proposed HSformer+.</p>
             </div>
