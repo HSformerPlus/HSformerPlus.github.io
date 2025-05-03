@@ -1,5 +1,5 @@
 'use strict';
-var theme != {
+var theme = {
   /**
    * Theme's components/functions list
    * Comment out or delete the unnecessary component.
